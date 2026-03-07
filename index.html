@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>8.3 | Massive Tulip Garden</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;600&family=Playfair+Display:ital,wght@1,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <div id="intro">
+        <div class="welcome-icon">🌷🌻</div>
+        <div class="progress-bar"><div class="progress-fill"></div></div>
+        <p class="intro-text">PLANTING THE MASSIVE GARDEN...</p>
+    </div>
+
+    <div id="main">
+        <canvas id="starsCanvas"></canvas>
+        <canvas id="sakuraCanvas"></canvas> 
+        
+        <canvas id="starsCanvas"></canvas>
+        <canvas id="sakuraCanvas"></canvas>
+
+        <div class="bouquet-container" id="bouquet">
+            <div class="tulip-row">
+                <span class="tulip">🌷</span><span class="tulip">🌻</span><span class="tulip">🌷</span><span class="tulip">🌻</span><span class="tulip">🌻</span>
+                <span class="tulip">🌷</span><span class="tulip">🌻</span><span class="tulip">🌷</span><span class="tulip">🌻</span><span class="tulip">🌻</span>
+                <span class="tulip">🌷</span><span class="tulip">🌻</span><span class="tulip">🌷</span><span class="tulip">🌻</span><span class="tulip">🌻</span>
+                <span class="tulip">🌷</span><span class="tulip">🌻</span><span class="tulip">🌷</span><span class="tulip">🌻</span><span class="tulip">🌻</span>
+                <span class="tulip">🌷</span><span class="tulip">🌻</span><span class="tulip">🌷</span><span class="tulip">🌻</span><span class="tulip">🌻</span>
+            </div>
+        </div>
+
+        <div class="envelope-wrapper" id="envelopeWrapper">
+            <div class="env-back"></div>
+            <div class="env-paper" id="envPaper">
+                <h1 id="wishTitle">Happy Women's Day</h1>
+                <h3 id="wishSubTitle">Gửi đến bạn</h3>
+                <div class="glow-line"></div>
+                <p id="typingText"></p>
+                
+                <button class="gift-btn"
+onclick="openPhoto(
+'sun.jpg',
+'HAPPY WOMEN\'S DAY<br>Wishing you a day as beautiful as you are 🌻<br><br>8 March, 2026 | Keep shining, lady!',
+'Dành riêng cho bạn')">
+✧ Chạm để nhận hoa ✧
+</button>
+                
+                <button class="close-btn" onclick="location.reload()">Đóng lại</button>
+            </div>
+            <div class="env-front"></div>
+            <div class="env-flap" id="envFlap"></div>
+            <p class="click-hint">✧ Chạm để mở ✧</p>
+        </div>
+
+        <div class="footer-icon">✧</div>
+    </div>
+
+    <div id="photo-modal" onclick="this.style.display='none'">
+        <div class="sunflower-card" onclick="event.stopPropagation()">
+            <div class="deco-bouquet left-top">🌻🌻🌻</div>
+            <div class="deco-bouquet right-bottom">🌻🌻🌻</div>
+            <div class="card-header"><h2 id="modal-title"></h2></div>
+            <div class="photo-frame"><img id="modal-img" src="" alt="Flower"></div>
+            <div class="card-body">
+                <p id="modal-text"></p>
+                <div class="small-sunflowers"></div>
+            </div>
+            <button class="card-close" onclick="document.getElementById('photo-modal').style.display='none'">Xong rồi</button>
+        </div>
+    </div>
+
+    <script src="js/main.js"></script>
+    <script src="js/stars.js"></script>
+</body>
+</html>

@@ -1,0 +1,496 @@
+:root {
+    --pink: #ff1a66;     
+    --gold: #d4a373;     
+    --gold-bright: #ffd700; 
+    --green-sea: #2e8b57; 
+    --bg: #050505;       
+    --glass: rgba(10, 10, 10, 0.9);
+    
+    --env-back: #e09f9f;
+    --env-front: #c47c7c;
+    --env-flap: #d88e8e;
+    --paper-bg: #fffbf0; 
+}
+
+* { 
+    margin: 0; 
+    padding: 0; 
+    box-sizing: border-box; 
+    outline: none; 
+}
+
+html, body { 
+    height: 100%; 
+    width: 100%; 
+    overflow: hidden; 
+    background: var(--bg); 
+    color: #fff; 
+    font-family: 'Montserrat', sans-serif; 
+}
+
+/* --- INTRO --- */
+#intro { 
+    position: fixed; 
+    inset: 0; 
+    z-index: 999; 
+    background: #000; 
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    justify-content: center; 
+    transition: 1.5s ease-in-out; 
+}
+
+.welcome-icon { 
+    font-size: clamp(50px, 8vw, 70px); 
+    animation: pulseHint 1.5s infinite; 
+    filter: drop-shadow(0 0 10px rgba(255, 26, 102, 0.5)); 
+    color: var(--pink); 
+    text-shadow: 0 0 20px var(--pink); 
+}
+
+.progress-bar { 
+    width: clamp(150px, 30vw, 180px); 
+    height: 2px; 
+    background: #222; 
+    margin: 30px 0 35px 0; 
+    position: relative; 
+    overflow: hidden; 
+}
+
+.progress-fill { 
+    position: absolute; 
+    height: 100%; 
+    background: var(--pink); 
+    width: 0%; 
+    animation: loading 3s forwards cubic-bezier(0.22, 0.61, 0.36, 1); 
+}
+
+.intro-text { 
+    font-size: clamp(0.7rem, 2vw, 0.8rem); 
+    letter-spacing: 3px; 
+    color: #999; 
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.2); 
+    text-align: center; 
+}
+
+/* --- MAIN SCENE --- */
+#main { 
+    opacity: 0; 
+    transition: opacity 2s; 
+    position: relative; 
+    width: 100%; 
+    height: 100%; 
+}
+
+/* Tối ưu Canvas để không bị đè */
+#starsCanvas, #sakuraCanvas { 
+    position: absolute; 
+    inset: 0; 
+    width: 100%;
+    height: 100%;
+    pointer-events: none; 
+}
+
+#starsCanvas { 
+    z-index: 2; /* Nằm ngay trên nền đen */
+}
+
+#sakuraCanvas { 
+    z-index: 150; 
+} 
+
+/* --- VƯỜN TULIP --- */
+.bouquet-container {
+    position: absolute; 
+    bottom: -20vh; 
+    left: 0; 
+    width: 100vw; 
+    display: flex; 
+    justify-content: center;
+    z-index: 50; 
+    pointer-events: none; 
+    opacity: 0; 
+    transition: opacity 2s, bottom 2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.bouquet-container.active { 
+    opacity: 1; 
+    bottom: -2vh; 
+}
+
+.tulip-row {
+    display: flex; 
+    width: 120vw; 
+    justify-content: center; 
+    align-items: flex-end; 
+    flex-wrap: nowrap;
+}
+
+.tulip {
+    display: inline-block; 
+    line-height: 1; 
+    margin: 0 -1.5vw; 
+    filter: drop-shadow(0 10px 15px rgba(255, 26, 102, 0.3)); 
+    transform-origin: bottom center; 
+}
+
+.tulip:nth-child(2n) { font-size: 8vh; animation: swayTulip 4s infinite ease-in-out alternate; z-index: 1; }
+.tulip:nth-child(3n) { font-size: 14vh; animation: swayTulip 5.5s infinite ease-in-out alternate-reverse; animation-delay: 0.5s; z-index: 5; }
+.tulip:nth-child(4n) { font-size: 18vh; animation: swayTulip 6s infinite ease-in-out alternate; animation-delay: 1.2s; z-index: 2; }
+.tulip:nth-child(5n) { font-size: 22vh; animation: swayTulip 4.5s infinite ease-in-out alternate-reverse; animation-delay: 0.3s; z-index: 10; } 
+.tulip:nth-child(7n) { font-size: 12vh; animation: swayTulip 7s infinite ease-in-out alternate; animation-delay: 0.8s; z-index: 3; }
+.tulip:nth-child(11n) { font-size: 26vh; animation: swayTulip 6.5s infinite ease-in-out alternate-reverse; animation-delay: 0.1s; z-index: 15; } 
+
+/* --- LÁ THƯ --- */
+.envelope-wrapper {
+    position: absolute; 
+    top: 35%; 
+    left: 50%; 
+    transform: translate(-50%, -50%) rotate(-8deg); 
+    width: clamp(180px, 20vw, 240px); 
+    height: clamp(120px, 13vw, 160px); 
+    z-index: 100; 
+    cursor: pointer; 
+    display: none;
+    perspective: 1200px; 
+    transition: all 1s ease-in-out;
+    filter: drop-shadow(0 20px 30px rgba(0,0,0,0.8));
+}
+
+.envelope-wrapper.float { 
+    animation: floatEnvelope 3s infinite ease-in-out; 
+}
+
+.env-back { 
+    position: absolute; 
+    width: 100%; 
+    height: 100%; 
+    background: var(--env-back); 
+    border-radius: 6px; 
+    box-shadow: inset 0 0 20px rgba(0,0,0,0.2); 
+}
+
+.env-front { 
+    position: absolute; 
+    bottom: 0; 
+    left: 0; 
+    width: 100%; 
+    height: 100%; 
+    background: var(--env-front); 
+    z-index: 3; 
+    clip-path: polygon(0 0, 50% 35%, 100% 0, 100% 100%, 0 100%); 
+    border-top: 1px solid rgba(255,255,255,0.2); 
+}
+
+.env-flap { 
+    position: absolute; 
+    top: 0; 
+    left: 0; 
+    width: 100%; 
+    height: 100%; 
+    background: var(--env-flap); 
+    z-index: 4; 
+    clip-path: polygon(0 0, 50% 45%, 100% 0); 
+    transform-origin: top; 
+    transition: 0.6s ease-in-out; 
+    border-bottom: 2px solid rgba(255,255,255,0.4); 
+}
+
+.click-hint { 
+    position: absolute; 
+    bottom: -45px; 
+    width: 100%; 
+    text-align: center; 
+    color: #fff; 
+    text-shadow: 0 0 10px var(--pink); 
+    font-size: clamp(0.7rem, 2vw, 0.8rem); 
+    letter-spacing: 2px; 
+    animation: pulseHint 1s infinite; 
+    white-space: nowrap;
+}
+
+/* --- BOX LỜI CHÚC --- */
+.env-paper {
+    position: absolute; 
+    top: 5px; 
+    left: 5px; 
+    right: 5px; 
+    bottom: 5px;
+    background: var(--paper-bg); 
+    border-radius: 4px; 
+    z-index: 2;
+    padding: clamp(15px, 3vw, 30px); 
+    text-align: center; 
+    opacity: 0; 
+    overflow: hidden;
+    box-shadow: inset 0 0 30px rgba(0,0,0,0.05); 
+    transition: all 1s ease-in-out;
+}
+
+.env-paper h1 { 
+    font-family: 'Playfair Display'; 
+    font-size: clamp(1.5rem, 5vw, 2.2rem); 
+    color: #b71c1c; 
+    margin-bottom: 10px; 
+    opacity: 0; 
+}
+
+.env-paper h3 { 
+    color: #795548; 
+    font-weight: 500; 
+    letter-spacing: 2px; 
+    margin-bottom: 20px; 
+    font-size: clamp(0.8rem, 2.5vw, 0.9rem); 
+    opacity: 0; 
+}
+
+.env-paper .glow-line { 
+    width: 60px; 
+    height: 2px; 
+    background: var(--env-flap); 
+    margin: 0 auto 20px; 
+    opacity: 0; 
+}
+
+#typingText { 
+    line-height: 1.6; 
+    color: #4e342e; 
+    font-size: clamp(0.9rem, 3vw, 1.05rem); 
+    text-align: left; 
+    font-weight: 500; 
+    font-family: 'Montserrat', sans-serif; 
+    min-height: 120px; 
+    overflow-y: auto;
+}
+
+.close-btn { 
+    margin-top: 15px; 
+    background: transparent; 
+    border: 2px solid #795548; 
+    color: #795548; 
+    padding: 10px 20px; 
+    border-radius: 30px; 
+    cursor: pointer; 
+    transition: 0.3s; 
+    opacity: 0; 
+    font-weight: bold; 
+    letter-spacing: 1px; 
+    font-size: clamp(0.8rem, 2vw, 0.9rem);
+}
+
+.close-btn:hover { 
+    background: #795548; 
+    color: #fff; 
+    box-shadow: 0 0 15px rgba(121, 85, 72, 0.5); 
+}
+
+/* --- TRẠNG THÁI MỞ THƯ --- */
+.envelope-wrapper.open { 
+    transform: translate(-50%, -50%) rotate(0deg) scale(1); 
+}
+
+.envelope-wrapper.open .env-flap { 
+    transform: rotateX(180deg); 
+    z-index: 1; 
+}
+
+.envelope-wrapper.open .click-hint { 
+    display: none; 
+}
+
+.envelope-wrapper.open .env-paper {
+    bottom: auto; 
+    top: 50%; 
+    left: 50%; 
+    transform: translate(-50%, -50%);
+    width: 90vw; 
+    max-width: 420px; 
+    height: 85vh; 
+    max-height: 580px; 
+    position: fixed; 
+    z-index: 200; 
+    opacity: 1; 
+    box-shadow: 0 40px 100px rgba(0, 0, 0, 0.9);
+    border: 4px solid var(--env-flap);
+    display: flex; 
+    flex-direction: column; 
+    justify-content: center;
+}
+
+.envelope-wrapper.open .env-paper h1, 
+.envelope-wrapper.open .env-paper h3, 
+.envelope-wrapper.open .env-paper .close-btn,
+.envelope-wrapper.open .env-paper .glow-line { 
+    opacity: 1; 
+    transition: 1s 1.2s; 
+}
+
+/* --- ICON FOOTER --- */
+.footer-icon {
+    position: absolute; 
+    bottom: 20px; 
+    left: 50%; 
+    transform: translateX(-50%);
+    font-size: 24px; 
+    color: var(--pink); 
+    text-shadow: 0 0 10px var(--pink);
+    animation: pulseIcon 2s infinite; 
+    opacity: 1; 
+    transition: opacity 2s; 
+    z-index: 101; 
+}
+
+/* --- MEDIA QUERIES --- */
+@media (max-width: 600px) {
+    .tulip { margin: 0 -3vw; } 
+    .envelope-wrapper { top: 30%; } 
+}
+
+/* --- ANIMATIONS --- */
+@keyframes loading { to { width: 100%; } }
+@keyframes pulseHint { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.1); opacity: 0.7; } }
+@keyframes pulseIcon { 0%, 100% { transform: translateX(-50%) scale(1); opacity: 0.7; } 50% { transform: translateX(-50%) scale(1.2); opacity: 1; } }
+@keyframes floatEnvelope { 0%, 100% { transform: translate(-50%, -50%) rotate(-8deg); } 50% { transform: translate(-50%, -58%) rotate(-5deg); filter: drop-shadow(0 0 20px rgba(0,0,0,0.5)); } }
+@keyframes swayTulip { from { transform: rotate(-6deg); } to { transform: rotate(6deg); } }
+
+/* ===== NÚT NHẬN HOA ===== */
+
+.gift-btn{
+    margin-top:20px;
+    background: linear-gradient(45deg,#ffd700,#ffcc33);
+    border:none;
+    padding:12px 22px;
+    border-radius:30px;
+    font-weight:bold;
+    cursor:pointer;
+    color:#5d4037;
+    font-size:14px;
+    letter-spacing:1px;
+    transition:0.3s;
+    box-shadow:0 0 15px rgba(255,215,0,0.6);
+}
+
+.gift-btn:hover{
+    transform:scale(1.05);
+    box-shadow:0 0 25px rgba(255,215,0,0.9);
+}
+
+
+/* ===== MODAL ẢNH ===== */
+
+#photo-modal{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.8);
+    backdrop-filter:blur(6px);
+    display:none;
+    align-items:center;
+    justify-content:center;
+    z-index:999;
+}
+
+
+/* ===== KHUNG THIỆP HOA ===== */
+
+.sunflower-card{
+    width:90%;
+    max-width:420px;
+    background:#fff8dc;
+    border-radius:20px;
+    padding:25px;
+    text-align:center;
+    position:relative;
+    box-shadow:0 20px 60px rgba(0,0,0,0.7);
+    animation:cardAppear 0.6s ease;
+}
+
+
+/* tiêu đề */
+
+.card-header h2{
+    color:#8d6e63;
+    margin-bottom:15px;
+}
+
+
+/* khung ảnh */
+
+.photo-frame{
+    border:6px solid #ffd54f;
+    border-radius:15px;
+    overflow:hidden;
+    margin-bottom:15px;
+}
+
+.photo-frame img{
+    width:100%;
+    display:block;
+}
+
+
+/* nội dung */
+
+.card-body p{
+    color:#5d4037;
+    font-size:15px;
+    line-height:1.6;
+    margin-bottom:10px;
+}
+
+
+/* hoa trang trí */
+
+.small-sunflowers{
+    font-size:22px;
+    margin-top:10px;
+}
+
+
+/* hoa góc */
+
+.deco-bouquet{
+    position:absolute;
+    font-size:26px;
+}
+
+.left-top{
+    top:-15px;
+    left:-10px;
+}
+
+.right-bottom{
+    bottom:-15px;
+    right:-10px;
+}
+
+
+/* nút đóng */
+
+.card-close{
+    margin-top:15px;
+    background:#ffcc33;
+    border:none;
+    padding:10px 20px;
+    border-radius:20px;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+.card-close:hover{
+    background:#ffd700;
+}
+
+
+/* animation */
+
+@keyframes cardAppear{
+    from{
+        transform:scale(0.7);
+        opacity:0;
+    }
+    to{
+        transform:scale(1);
+        opacity:1;
+    }
+}
