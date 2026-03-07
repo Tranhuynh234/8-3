@@ -1,6 +1,6 @@
 const wishData = {
     title: "Happy Women's Day",
-    baseMessage: "Thế giới này trở nên dịu dàng và ý nghĩa hơn nhờ có sự hiện diện của phái đẹp. Chúc bạn luôn rạng rỡ như những đóa hoa, tự tin tỏa sáng theo cách riêng và tận hưởng một ngày 8/3 trọn vẹn yêu thương!"
+    baseMessage: "Gửi đến người đẹp lời chúc 8/3 chân thành nhất. Hy vọng người đẹp sẽ nhận được thật nhiều niềm vui, và luôn cảm thấy mình được yêu thương, trân trọng. Hãy cứ mãi xinh đẹp, kiêu sa và là phiên bản hạnh phúc nhất của chính mình nhe!"
 };
 
 // Đảm bảo script chạy sau khi DOM đã sẵn sàng
